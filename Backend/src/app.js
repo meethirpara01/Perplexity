@@ -14,8 +14,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(morgan("dev"));
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean)
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
     methods: [ "GET", "POST", "PUT", "DELETE" ],
 }))

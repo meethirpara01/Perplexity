@@ -4,9 +4,14 @@ let io
 
 export async function initSocket(httpServer)
 {
+    const allowedOrigins = [
+        "http://localhost:5173",
+        process.env.FRONTEND_URL
+    ].filter(Boolean)
+
     io = new Server(httpServer, {
         cors: {
-            origin: "http://localhost:5173",
+            origin: allowedOrigins,
             credentials: true
         }
     })
