@@ -19,15 +19,19 @@ transpoter.verify()
         console.log("Email transpoter verification failed:", err)
     })
 
-export async function sendEmail({ to, subject, html })
-{
-    const mailOption = {
-        from: process.env.GOOGLE_USER,
-        to,
-        subject,
-        html
-    }
+export async function sendEmail({ to, subject, html }) {
+    try {
+        const mailOption = {
+            from: process.env.GOOGLE_USER,
+            to,
+            subject,
+            html
+        }
 
-    const details = await transpoter.sendMail(mailOption)
-    console.log("Email Sent:", details)
+        const details = await transpoter.sendMail(mailOption)
+        console.log("Email Sent:", details)
+    }
+    catch (err) {
+        console.error("Failed to send email:", err)
+    }
 }
