@@ -1,22 +1,30 @@
 import nodemailer from 'nodemailer'
 
-const transpoter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: process.env.GOOGLE_USER,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        clientId: process.env.GOOGLE_CLIENT_ID,
-    }
-})
+// const transpoter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         type: 'OAuth2',
+//         user: process.env.GOOGLE_USER,
+//         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+//         clientId: process.env.GOOGLE_CLIENT_ID,
+//     }
+// })
 
-transpoter.verify()
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GOOGLE_USER,
+    pass: process.env.GOOGLE_APP_PASSWORD
+  }
+});
+
+transporter.verify()
     .then(() => {
-        console.log("Email transpoter is redy to send email");
+        console.log("Email transporter is ready to send email");
     })
     .catch((err) => {
-        console.log("Email transpoter verification failed:", err)
+        console.log("Email transporter verification failed:", err)
     })
 
 export async function sendEmail({ to, subject, html }) {
@@ -28,7 +36,7 @@ export async function sendEmail({ to, subject, html }) {
             html
         }
 
-        const details = await transpoter.sendMail(mailOption)
+        const details = await transporter.sendMail(mailOption)
         console.log("Email Sent:", details)
     }
     catch (err) {
