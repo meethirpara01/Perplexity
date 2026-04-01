@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import './src/services/mail.service.js'
 import app from './src/app.js'
 import http from 'http'
 import connectToDB from './src/config/database.js'

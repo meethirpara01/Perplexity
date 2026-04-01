@@ -1,4 +1,5 @@
 import express from 'express'
+import './services/mail.service.js'
 import cookieParser from 'cookie-parser'
 import morgan from "morgan";
 import cors from "cors";
