@@ -1,4 +1,3 @@
-import "dotenv/config"
 import nodemailer from 'nodemailer'
 
 const transpoter = nodemailer.createTransport({
@@ -30,9 +29,5 @@ export async function sendEmail({ to, subject, html })
     }
 
     const details = await transpoter.sendMail(mailOption)
-    .catch((err) => {
-        console.error("Failed to send email:", err)
-        throw new Error("Failed to send email")
-    })
     console.log("Email Sent:", details)
 }
