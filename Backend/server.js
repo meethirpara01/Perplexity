@@ -11,7 +11,7 @@ const httpServer = http.createServer(app);
 initSocket(httpServer)
 
 connectToDB()
-    .catch(() => {
+    .catch((err) => {
         console.error("MongoDB connection failed:", err);
         process.exit(1);
     })
