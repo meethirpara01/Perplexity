@@ -31,10 +31,11 @@ export async function register(req, res) {
         email: user.email
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    await sendEmail({
-        to: email,
-        subject: "Welcome to Perplexity!",
-        html: `
+    try {
+        await sendEmail({
+            to: email,
+            subject: "Welcome to Perplexity!",
+            html: `
                 <p>Hi ${username},</p>
                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
                 <p>Please verify your email address by clicking the link below:</p>
@@ -42,7 +43,16 @@ export async function register(req, res) {
                 <p>If you did not create an account, please ignore this email.</p>
                 <p>Best regards,<br>The Perplexity Team</p>
         `
-    })
+        })
+    }
+    catch (err) {
+        console.error("Failed to send verification email:", err)
+        return res.status(500).json({
+            message: 'Failed to send verification email. Please try again later.',
+            success: false,
+            err: "Failed to send verification email"
+        })
+    }
 
     res.status(201).json({
         message: "User register Successfully",
