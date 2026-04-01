@@ -31,7 +31,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/chats', chatRoute)
 
 // Serve index.html for all unmatched routes (for frontend routing)
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
