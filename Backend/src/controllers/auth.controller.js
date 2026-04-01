@@ -31,12 +31,10 @@ export async function register(req, res) {
         email: user.email
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    try {
-        console.log(`📧 Sending verification email to: ${email}`)
-        await sendEmail({
-            to: email,
-            subject: "Welcome to Perplexity! Verify Your Email",
-            html: `
+    await sendEmail({
+        to: email,
+        subject: "Welcome to Perplexity!",
+        html: `
                 <p>Hi ${username},</p>
                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
                 <p>Please verify your email address by clicking the link below:</p>
@@ -44,23 +42,10 @@ export async function register(req, res) {
                 <p>If you did not create an account, please ignore this email.</p>
                 <p>Best regards,<br>The Perplexity Team</p>
         `
-        })
-        console.log(`✅ Verification email sent to: ${email}`)
-    }
-    catch (err) {
-        console.error(`❌ Failed to send verification email to ${email}:`, err.message)
-        // Delete the user since email failed
-        await userModel.findByIdAndDelete(user._id)
-        
-        return res.status(500).json({
-            message: 'Failed to send verification email. Please check your email address and try again.',
-            success: false,
-            err: err.message
-        })
-    }
+    })
 
     res.status(201).json({
-        message: "User registered successfully! Check your email to verify.",
+        message: "User register Successfully",
         success: true,
         user: {
             id: user._id,
@@ -187,12 +172,10 @@ export async function resendVerificationEmail(req, res) {
         email: user.email
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    try {
-        console.log(`📧 Resending verification email to: ${email}`)
-        await sendEmail({
-            to: email,
-            subject: "Welcome to Perplexity! Verify Your Email",
-            html: `
+    await sendEmail({
+        to: email,
+        subject: "Welcome to Perplexity!",
+        html: `
                 <p>Hi ${user.username},</p>
                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
                 <p>Please verify your email address by clicking the link below:</p>
@@ -200,19 +183,10 @@ export async function resendVerificationEmail(req, res) {
                 <p>If you did not create an account, please ignore this email.</p>
                 <p>Best regards,<br>The Perplexity Team</p>
         `
-        })
-        console.log(`✅ Verification email resent to: ${email}`)
-    } catch (err) {
-        console.error(`❌ Failed to resend verification email to ${email}:`, err.message)
-        return res.status(500).json({
-            message: 'Failed to resend verification email. Please try again later.',
-            success: false,
-            err: err.message
-        })
-    }
+    })
 
     res.status(201).json({
-        message: 'Verification email resent successfully! Check your email.',
+        message: 'Verification email resent successfully',
         success: true,
     })
 }

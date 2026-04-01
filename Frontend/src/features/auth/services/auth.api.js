@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_BASE_URL = "https://perplexity-islp.onrender.com" || "http://localhost:3000"
+const API_BASE_URL = "https://perplexity-islp.onrender.com" 
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -10,6 +10,7 @@ const api = axios.create({
 export async function register({ email, username, password })
 {
     const response = await api.post('/api/auth/register', { email, username, password })
+    console.log(response);
     return response.data
 }
 
