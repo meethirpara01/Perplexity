@@ -21,10 +21,16 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify()
     .then(() => {
-        console.log("Email transporter is ready to send email");
+        console.log("✅ [EMAIL] Transporter is ready to send emails")
     })
     .catch((err) => {
-        console.log("Email transporter verification failed:", err)
+        console.error("❌ [EMAIL] Transporter verification failed!")
+        console.error("Error details:", err.message)
+        console.error("Make sure these env vars are set:")
+        console.error("  - GOOGLE_USER:", process.env.GOOGLE_USER ? "✓" : "✗")
+        console.error("  - GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "✓" : "✗")
+        console.error("  - GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "✓" : "✗")
+        console.error("  - GOOGLE_REFRESH_TOKEN:", process.env.GOOGLE_REFRESH_TOKEN ? "✓" : "✗")
     })
 
 export async function sendEmail({ to, subject, html }) {
@@ -37,9 +43,11 @@ export async function sendEmail({ to, subject, html }) {
         }
 
         const details = await transporter.sendMail(mailOption)
-        console.log("Email Sent:", details)
+        console.log("✅ Email Sent Successfully:", details.messageId)
+        return details
     }
     catch (err) {
-        console.error("Failed to send email:", err)
+        console.error("❌ Failed to send email:", err.message)
+        throw err  // IMPORTANT: Throw the error so the caller knows it failed
     }
 }
